@@ -25,15 +25,15 @@ addCommandAlias("check", "; scalafmtSbtCheck; scalafmtCheckAll; compile:scalafix
 
 addCommandAlias(
   "testJVM",
-  ";typeFuJVM/test"
+  ";typefuJVM/test"
 )
 addCommandAlias(
   "testJS",
-  ";typeFuJS/test"
+  ";typefuJS/test"
 )
 addCommandAlias(
   "testNative",
-  ";typeFuNative/test:compile"
+  ";typefuNative/test:compile"
 )
 
 val zioVersion = "1.0.10"
@@ -45,13 +45,13 @@ lazy val root = project
     unusedCompileDependenciesFilter -= moduleFilter("org.scala-js", "scalajs-library")
   )
   .aggregate(
-    typeFuJVM,
-    typeFuJS,
-    typeFuNative,
+    typefuJVM,
+    typefuJS,
+    typefuNative,
     docs
   )
 
-lazy val typeFu = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val typefu = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .in(file("typefu"))
   .settings(stdSettings("typefu"))
   .settings(crossProjectSettings)
@@ -66,17 +66,17 @@ lazy val typeFu = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"))
   .enablePlugins(BuildInfoPlugin)
 
-lazy val typeFuJS = typeFu.js
+lazy val typefuJS = typefu.js
   .settings(jsSettings)
   .settings(libraryDependencies += "dev.zio" %%% "zio-test-sbt" % zioVersion % Test)
   .settings(scalaJSUseMainModuleInitializer := true)
 
-lazy val typeFuJVM = typeFu.jvm
+lazy val typefuJVM = typefu.jvm
   .settings(dottySettings)
   .settings(libraryDependencies += "dev.zio" %%% "zio-test-sbt" % zioVersion % Test)
   .settings(scalaReflectTestSettings)
 
-lazy val typeFuNative = typeFu.native
+lazy val typefuNative = typefu.native
   .settings(nativeSettings)
 
 lazy val docs = project
@@ -87,11 +87,11 @@ lazy val docs = project
     moduleName := "typefu-docs",
     scalacOptions -= "-Yno-imports",
     scalacOptions -= "-Xfatal-warnings",
-    ScalaUnidoc / unidoc / unidocProjectFilter := inProjects(typeFuJVM),
+    ScalaUnidoc / unidoc / unidocProjectFilter := inProjects(typefuJVM),
     ScalaUnidoc / unidoc / target := (LocalRootProject / baseDirectory).value / "website" / "static" / "api",
     cleanFiles += (ScalaUnidoc / unidoc / target).value,
     docusaurusCreateSite := docusaurusCreateSite.dependsOn(Compile / unidoc).value,
     docusaurusPublishGhpages := docusaurusPublishGhpages.dependsOn(Compile / unidoc).value
   )
-  .dependsOn(typeFuJVM)
+  .dependsOn(typefuJVM)
   .enablePlugins(MdocPlugin, DocusaurusPlugin, ScalaUnidocPlugin)
