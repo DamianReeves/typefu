@@ -3,14 +3,14 @@ import BuildHelper._
 inThisBuild(
   List(
     organization := "dev.zio",
-    homepage := Some(url("https://zio.github.io/type-fu/")),
+    homepage := Some(url("https://github.com/DamianReeves/typefu/")),
     licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     developers := List(
       Developer(
-        "jdegoes",
-        "John De Goes",
-        "john@degoes.net",
-        url("http://degoes.net")
+        "DamianReeves",
+        "Damian Reeves",
+        "",
+        url("http://damianreeves.com")
       )
     ),
     pgpPassphrase := sys.env.get("PGP_PASSWORD").map(_.toArray),
@@ -36,7 +36,7 @@ addCommandAlias(
   ";typeFuNative/test:compile"
 )
 
-val zioVersion = "1.0.9"
+val zioVersion = "1.0.10"
 
 lazy val root = project
   .in(file("."))
@@ -52,10 +52,10 @@ lazy val root = project
   )
 
 lazy val typeFu = crossProject(JSPlatform, JVMPlatform, NativePlatform)
-  .in(file("type-fu"))
-  .settings(stdSettings("type-fu"))
+  .in(file("typefu"))
+  .settings(stdSettings("typefu"))
   .settings(crossProjectSettings)
-  .settings(buildInfoSettings("type.fu"))
+  .settings(buildInfoSettings("typefu"))
   .settings(
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio"          % zioVersion,
@@ -80,11 +80,11 @@ lazy val typeFuNative = typeFu.native
   .settings(nativeSettings)
 
 lazy val docs = project
-  .in(file("type-fu-docs"))
-  .settings(stdSettings("type-fu"))
+  .in(file("typefu-docs"))
+  .settings(stdSettings("typefu"))
   .settings(
     publish / skip := true,
-    moduleName := "type-fu-docs",
+    moduleName := "typefu-docs",
     scalacOptions -= "-Yno-imports",
     scalacOptions -= "-Xfatal-warnings",
     ScalaUnidoc / unidoc / unidocProjectFilter := inProjects(typeFuJVM),

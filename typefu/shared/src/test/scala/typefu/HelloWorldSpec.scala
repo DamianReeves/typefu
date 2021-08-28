@@ -1,13 +1,12 @@
-package type.fu
+package typefu
 
 import zio._
-import zio.console._
 import zio.test.Assertion._
 import zio.test._
 import zio.test.environment._
 
 object HelloWorld {
-  def sayHello: ZIO[Console, Nothing, Unit] =
+  def sayHello =
     console.putStrLn("Hello, World!")
 }
 
