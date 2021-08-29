@@ -1,11 +1,25 @@
 package typefu.datamodel
-
+import zio.prelude._
+//import zio.=!=
 //import typefu.hset.{HEmpty, HSet, :&:}
-sealed trait Key {
+sealed trait Key { self =>
   type KeyType
   type Target
+
+  final def =~=[B](that: KeyT[B])(implicit ev: B <:< KeyType, eq: Equal[KeyType] = Equal.default[KeyType]) =
+    isEquivalentTo(that)
+
+  final def isEquivalentTo[B](
+    that: KeyT[B]
+  )(implicit ev: B <:< KeyType, eq: Equal[KeyType] = Equal.default[KeyType]) =
+    eq.equal(self.value, that.value)
+
+  def map[B](f: KeyType => B): B KeyOn Target = KeyOn(f(value))
+
   def value: KeyType
   override def toString(): String = value.toString()
+
+  final def withTarget[Target1]: KeyOn[KeyType, Target1] = KeyOn(value)
 }
 
 final case class KeyOn[K, T](value: K) extends Key {

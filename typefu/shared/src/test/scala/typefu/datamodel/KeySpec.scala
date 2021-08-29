@@ -15,6 +15,20 @@ object KeySpec extends TestSpecBase {
           } yield assert(typeCheckResult)(isRight) && assertTrue(key1.value == key2.value)
         }
       } @@ TestAspect.ignore /* Need to figure out how to compare these */,
+      testM("should consider keys with the same key value to be equivalent") {
+        check(Gen.anyInt) { givenInt =>
+          val key1       = Key.on[Widget](givenInt)
+          val key2       = Key.on[Sprocket](givenInt)
+          val stringKey1 = key1.map(_.toString())
+          val stringKey2 = key2.map(_.toString())
+          assertTrue(
+            key1 =~= key2,
+            key1 isEquivalentTo key2,
+            stringKey1 =~= stringKey2,
+            stringKey1 isEquivalentTo stringKey2
+          )
+        }
+      },
       suite("when its a KeyT")(
         testM("should consider keys with the same key value as equivalent") {
           check(Gen.alphaNumericString, Gen.anyInt) { (stringInput, intInput) =>
