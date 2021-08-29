@@ -18,6 +18,11 @@ final case class KeyOn[K, T](value: K) extends Key {
 object Key {
   def apply[T](value: T): T KeyOn Any = KeyOn[T, Any](value)
 
+  def on[Target]: OnPartiallyApplied[Target] = new OnPartiallyApplied[Target]
+
+  final class OnPartiallyApplied[Target](val dummy: Boolean = false) extends AnyVal {
+    def apply[K](value: K): KeyOn[K, Target] = KeyOn(value)
+  }
 }
 
 // sealed trait Keys {
