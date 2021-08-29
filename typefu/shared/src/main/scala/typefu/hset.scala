@@ -215,7 +215,7 @@ object hset extends App {
       // val myDouble = set.get[Double]
       println(s"myString: $myString")
 
-      val sameSet: Boolean :&: String :&: Int :&: HEmpty.type =
+      val sameSet =
         "Kit" :&: true :&: "Adam" :&: 1 :&: HEmpty
 
       val union1 = set union set
@@ -262,11 +262,10 @@ object Example2 {
     val myString = set.get[String]
     // val myDouble = set.get[Double]
     println(s"myString: $myString")
-    val allDem   = set.collectIntoList(_.toString()).mkString(",")
+    val allDem   = set.collectIntoList { case o => o.toString }.mkString(",")
     println(s"all dem: $allDem")
 
-    val sameSet: Boolean :&: String :&: Int :&: HEmpty =
-      "Kit" :&: true :&: "Adam" :&: 1 :&: HEmpty
+    val sameSet = "Kit" :&: true :&: "Adam" :&: 1 :&: HEmpty
 
     val union1 = set union set
     val union2 = set union set2

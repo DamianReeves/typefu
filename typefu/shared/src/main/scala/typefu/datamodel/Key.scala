@@ -8,15 +8,16 @@ sealed trait Key {
   override def toString(): String = value.toString()
 }
 
+final case class KeyOn[K, T](value: K) extends Key {
+  type KeyType = K
+  type Target  = T
+}
+
 /// Make Key not polymorphic but with Type and Entity members
 
 object Key {
-  def apply[T](value: T): OfType[T] = OfType[T](value)
+  def apply[T](value: T): T KeyOn Any = KeyOn[T, Any](value)
 
-  final case class OfType[Type](value: Type) extends Key {
-    type KeyType = Type
-    type Target <: Any
-  }
 }
 
 // sealed trait Keys {
