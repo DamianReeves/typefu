@@ -15,7 +15,8 @@ inThisBuild(
     ),
     pgpPassphrase := sys.env.get("PGP_PASSWORD").map(_.toArray),
     pgpPublicRing := file("/tmp/public.asc"),
-    pgpSecretRing := file("/tmp/secret.asc")
+    pgpSecretRing := file("/tmp/secret.asc"),
+    resolvers += Resolver.sonatypeRepo("snapshots")
   )
 )
 
@@ -36,7 +37,8 @@ addCommandAlias(
   ";typefuNative/test:compile"
 )
 
-val zioVersion = "1.0.10"
+val zioVersion        = "1.0.10"
+val zioPreludeVersion = "1.0.0-RC6"
 
 lazy val root = project
   .in(file("."))
@@ -59,6 +61,7 @@ lazy val typefu = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .settings(
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio"          % zioVersion,
+      "dev.zio" %% "zio-prelude"  % zioPreludeVersion,
       "dev.zio" %% "zio-test"     % zioVersion % Test,
       "dev.zio" %% "zio-test-sbt" % zioVersion % Test
     )

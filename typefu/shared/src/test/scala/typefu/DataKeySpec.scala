@@ -1,8 +1,7 @@
 package typefu
 
 import zio.test._
-import zio.test.Assertion._
-object DataKeySpec extends DefaultRunnableSpec {
+object DataKeySpec extends TestSpecBase {
   def spec = suite("DataKey Spec")(
     suite("DataKey")(
       testM("should support creation with on") {
