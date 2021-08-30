@@ -6,4 +6,9 @@ package object datamodel {
     type Target <: Any
   }
 
+  type StringKeyOn[Target] = KeyOn[String, Target]
+
+  type SingletonKey = {
+    type KeyType <: Singleton
+  }
 }
